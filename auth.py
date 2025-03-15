@@ -98,8 +98,6 @@ def signUp():
 def login():
     userName=EnterUserName()
     password=EnterPassword()
-    while(not validatePassword(password)):
-        password=EnterPassword()
     password=hashlib.sha256(password.encode('utf-8')).hexdigest()
     df=pd.read_csv(usersDatabase)
     found=False
@@ -112,15 +110,13 @@ def login():
             tables=os.listdir(userDB)
             for table in tables:
                 print(table)
-            else:
-                print('No Table exists!')
-            return userName
+            return True,userName
         elif df.iloc[index]['userName'].__eq__(userName) or df.iloc[index]['password'].__eq__(password):
             print('Wrong username or passsword!')
             found=True
     if(not found):
         print('No such user exist!')
-    return None
+    return False,None
     
 
 def forgotPassword():
