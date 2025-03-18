@@ -86,11 +86,27 @@ def insertQuery(query,userName):
 def selectQuery(query,userName):
     chunk=query.split(' ')
     tablePath=os.path.join(setPath(userName),chunk[3]+'.csv')
+
+    df=pd.read_csv(tablePath)
+    columns=[col.split('.')[0] for col in df.columns]
+    df.columns=columns
     if(chunk[1]=='*'):
-        df=pd.read_csv(tablePath)
-        columns=[col.split('.')[0] for col in df.columns]
-        df.columns=columns
         print(df)
+    else:
+        isValid=True
+        result=[]
+        column=chunk[1].split(',')
+        for col in column:
+            if col in df.columns:
+                result.append(col)
+            else:
+                isValid=False
+                print(f'No such column name "{col}" exists')
+
+        if isValid:
+            print(df[result])
+        
+            
 
 def typeOfQuery(query, userName):
     chunk = query.split(' ')
