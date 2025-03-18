@@ -78,11 +78,19 @@ def insertQuery(query,userName):
                         print(f'Success: Data inserted into "{tableName}".')
                 else:
                     print('Error: Data not inserted due to validation errors.')
-                    
+
             elif len(columns) != len(values):
                 print(f"Error: Number of columns ({len(columns)}) does not match number of values ({len(values)}).")
                 return
     
+def selectQuery(query,userName):
+    chunk=query.split(' ')
+    tablePath=os.path.join(setPath(userName),chunk[3]+'.csv')
+    if(chunk[1]=='*'):
+        df=pd.read_csv(tablePath)
+        columns=[col.split('.')[0] for col in df.columns]
+        df.columns=columns
+        print(df)
 
 def typeOfQuery(query, userName):
     chunk = query.split(' ')
@@ -103,5 +111,10 @@ def typeOfQuery(query, userName):
             print('Error: Invalid query format. Expected "INSERT INTO <table_name>".')
             return
         insertQuery(query, userName)
+    elif command == 'select':
+        if chunk[2].lower() != 'from':
+            print('Error: Invalid query format. Expected "SELECT <columns_name> FROM <table_name>".')
+            return
+        selectQuery(query,userName)
     else:
         print('Error: Unsupported query type.')
