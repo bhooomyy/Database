@@ -84,33 +84,6 @@ def insertQuery(query,userName):
                 print(f"Error: Number of columns ({len(columns)}) does not match number of values ({len(values)}).")
                 return
 
-# def displayTBL(columns,tablePath):
-#     df=pd.read_csv(tablePath)
-#     csv_col_name=[col.split('.')[0] for col in df.columns]
-#     csv_col_type=[col.split('.')[1] for col in df.columns]
-#     result=[]
-#     if(len(columns)>1):
-#         for i in range(0,len(df.columns)):
-#             if columns[i]==csv_col_name[i]:
-#                 if csv_col_type[i]=='VARCHAR':
-#                     columns[i]=columns[i]
-#                 elif csv_col_type[i]=='INTEGER':
-#                     columns[i]=int(columns[i])
-#                 else:
-#                     columns[i]=float(columns[i])
-#                 result.append(columns[i])
-#     else:
-#         for i in range(0,len(csv_col_name)):
-#             if columns==csv_col_name[i]:
-#                 if csv_col_type[i]=='VARCHAR':
-#                     columns[i]=columns[i]
-#                 elif csv_col_type[i]=='INTEGER':
-#                     columns[i]=int(columns[i])
-#                 else:
-#                     columns[i]=float(columns[i])
-#                 result.append(columns[i])
-#     print(df[result])
-
 def selectQuery(query,userName):
     chunk=query.split(' ')
     tableName=query.lower().split('from')[1].strip()

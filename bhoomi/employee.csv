@@ -1,0 +1,4 @@
+empId.INTEGER,empDepartment.INTEGER,salary.FLOAT,empName.VARCHAR
+1001,10.0,100.0,'bhoomi'
+102,20.0,1.0,'dev'
+103,1.0,3400.3,b

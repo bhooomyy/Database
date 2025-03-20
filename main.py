@@ -12,13 +12,13 @@ while True:
             choice=int(choice)
             match choice:
                 case 1:
-                    valid=False
-                    userName=None
-                    while not valid:
-                        valid,userName=login()
-                        if not valid:
-                            print('Please try again.')
-                    #userName='bhoomi'
+                    # valid=False
+                    # userName=None
+                    # while not valid:
+                    #     valid,userName=login()
+                    #     if not valid:
+                    #         print('Please try again.')
+                    userName='bhoomi'
                     while True:
                         query=input('Enter your query: ')
                         if(query.__eq__('-1')):
