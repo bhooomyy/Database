@@ -188,6 +188,45 @@ def updateQuery(query,userName):
     else:
         print('Error: Data not updated due to validation errors.')
 
+def delQuery(query,userName):
+    chunk=query.split(' ')
+    tableName=chunk[2].strip()
+    tablePath=os.path.join(setPath(userName),tableName+'.csv')
+    condition=chunk[4]
+    req=chunk[4].split('=')[0]
+    req_val=chunk[4].split('=')[1]
+    df=pd.read_csv(tablePath)
+    csv_col={col.split('.')[0]:col for col in df.columns}
+    isValid=True
+    #{key:value,key:value}
+    #{key,key,key}
+    if req not in csv_col:
+        print(f'Error {req} doesn\'t exist in table')
+        isValid=False
+    if isValid:
+        if 'where' in query.lower():
+            condition_type_check_full=csv_col[req]
+            condition_type_check=condition_type_check_full.split('.')[1]
+            if condition_type_check=='VARCHAR':
+                req_val=str(req_val)
+            elif condition_type_check=='INTEGER':
+                req_val=int(req_val)
+            elif condition_type_check in ['FLOAT','DOUBLE']:
+                req_val=float(req_val)
+
+            for index,row in df.iterrows():
+                if row[condition_type_check_full]==req_val:
+                    df=pd.concat([df.iloc[0:index],df.iloc[index+1:]])
+        else:
+            df=df.iloc[0:0]
+    if isValid:
+        df.to_csv(tablePath,index=False)
+        print('Row/s deleted successfully!')
+    else:
+        print('Error!')
+
+    print(df)
+
 def typeOfQuery(query, userName):
     chunk = query.split(' ')
     if not chunk:
@@ -216,5 +255,9 @@ def typeOfQuery(query, userName):
         if 'set' and 'where' not in query.lower():
             print('Error: Invalid query format. Expected "UPDATE <table_name> SET <column1_name> = <value1>,... WHERE <condition>".')
         updateQuery(query,userName)
+    elif command=='delete':
+        if 'from' not in query.lower():
+            print('Error: Invalid query format. Expected "DELETE FROM <table_name> WHERE <conditions>".')
+        delQuery(query,userName)
     else:
         print('Error: Unsupported query type.')
